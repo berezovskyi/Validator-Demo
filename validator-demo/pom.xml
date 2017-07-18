@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.scania</groupId>
+	<artifactId>validator-demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<version.jetty>9.4.0.v20161208</version.jetty>
+		<version.lyo>2.3.0-SNAPSHOT</version.lyo>
+		<version.shaclex>0.0.60</version.shaclex>
+		<jena.version>3.0.1</jena.version>
+	</properties>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>${jena.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>${jena.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>es.weso</groupId>
+			<artifactId>shaclex_2.12</artifactId>
+			<version>0.0.60</version>
+			<type>pom</type>
+		</dependency>
+
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>labra</id>
+			<url>https://dl.bintray.com/labra/maven</url>
+		</repository>
+	</repositories>
+</project>
