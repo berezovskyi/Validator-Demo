@@ -42,34 +42,38 @@ public class Validator {
 	}
 	
 	public static Schema getSchema(String fileName) {
-		Schema schema = null;
 	    try {
 			CharSequence charSequence = Validator.load(fileName, "Error reading schema from stream");
 			Try<Schema> schemaTry = Schemas.fromString(charSequence, "TURTLE", "SHACLex", OPTION_NONE);
 
 			if (schemaTry.isSuccess()) {
-				schema = schemaTry.get();
+				return schemaTry.get();
+			} else {
+				throw new IllegalArgumentException("Failed to parse the schema");
 			}
 	    } catch (IOException e) {
-	    	LOGGER.error("Error invoking validator", e);
+	    	throw new IllegalArgumentException("Failed to read the schema file", e);
 	    }
-	    return schema;
 	}
 
 	public static Result validate(final RDFAsJenaModel rdf, final Schema schema) {
 		PrefixMap nodeMap = rdf.getPrefixMap();
 		PrefixMap shapesMap = schema.pm();
-		return schema.validate(rdf, "TargetDecls", OPTION_NONE, OPTION_NONE, nodeMap, shapesMap);
+		final String triggerMode = "TargetDecls";
+		final Option<String> node = OPTION_NONE;
+		final Option<String> shape = OPTION_NONE;
+		return schema.validate(rdf, triggerMode, node, shape, nodeMap, shapesMap);
 	}
 		
 	
 	public static Result validate(RDFAsJenaModel resourceAsRDFReader, RDFAsJenaModel shapeAsRDFReader) {
-		Schema schema = null;
 		Try<Schema> schemaTry = Schemas.fromRDF(shapeAsRDFReader, "SHACLex");
 		if (schemaTry.isSuccess()) {
-			schema = schemaTry.get();
+			Schema schema = schemaTry.get();
+			return validate(resourceAsRDFReader, schema);
+		} else {
+			throw new IllegalArgumentException("Malformed schema");
 		}
-		return validate(resourceAsRDFReader, schema);
 	}
 	
 	public static Result validate(Model resourceAsModel, Model shapeAsModel) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, DatatypeConfigurationException {
